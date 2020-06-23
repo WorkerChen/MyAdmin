@@ -33,17 +33,35 @@ export default {
   data() {
     return {
       view_show: false,
-      menu: false
+      menu: false,
+      sceenWidth: window.innerWidth
     };
   },
   mounted() {
     this.view_show = true;
+    window.onresize = () => {
+      return (() => {
+        this.sceenWidth = window.innerWidth;
+      })();
+    };
   },
   components: { navigation },
+  watch: {
+    sceenWidth: function(newVal) {
+      if (newVal < 1048) {
+        this.menu = true;
+      } else {
+        this.menu = false;
+      }
+    }
+  },
   methods: {
     checkMenu() {
       this.menu = !this.menu;
       console.log(this.menu);
+    },
+    Menu() {
+      this.menu = true;
     }
   }
 };
