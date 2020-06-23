@@ -23,7 +23,7 @@ const router = new VueRouter({
       component: Home,
       redirect: "/Nav1/text1",
       menuShow: true,
-      // icon:"iconfont menu-good" 图标
+      icon: "icontheme",
       children: [
         {
           path: "/Nav1/text1",
@@ -51,6 +51,7 @@ const router = new VueRouter({
       component: Home,
       redirect: "/Text4",
       menuShow: true,
+      icon: "iconshezhi",
       children: [
         { path: "/text4", component: Text4, name: "Text4", menuShow: true }
       ]

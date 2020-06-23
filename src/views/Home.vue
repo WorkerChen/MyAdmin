@@ -1,13 +1,19 @@
 <template>
   <el-container class="home">
     <!-- 侧边导航栏 -->
-    <el-aside width="200px">
-      <navigation></navigation>
-    </el-aside>
+    <transition>
+      <el-aside width="">
+        <navigation :collapse="menu"></navigation>
+      </el-aside>
+    </transition>
     <el-container>
       <!-- 顶部 -->
       <el-header>
-        <i class="iconfont icon-iconportrait"></i>
+        <i
+          :class="menu ? 'iconcaidan1' : 'iconcaidan'"
+          class="iconfont"
+          @click="checkMenu()"
+        ></i>
       </el-header>
       <!-- 内容栏 -->
       <el-main>
@@ -26,13 +32,20 @@ export default {
   name: "Home",
   data() {
     return {
-      view_show: false
+      view_show: false,
+      menu: false
     };
   },
   mounted() {
     this.view_show = true;
   },
-  components: { navigation }
+  components: { navigation },
+  methods: {
+    checkMenu() {
+      this.menu = !this.menu;
+      console.log(this.menu);
+    }
+  }
 };
 </script>
 <style lang="scss">
@@ -40,10 +53,22 @@ export default {
   height: 100vh;
   .el-header {
     width: 100%;
-    line-height: 60px;
-    border: 1px solid #000;
-    margin: 0 auto;
+    height: 50px !important;
+    line-height: 50px;
     padding: 0;
+    border-bottom: 1px solid #000;
+    i {
+      height: 100%;
+      width: 50px;
+      text-align: center;
+      display: block;
+      font-size: 24px;
+      transition: background-color 1s;
+      &:hover {
+        background-color: #cccccc;
+        color: #fff;
+      }
+    }
   }
 
   .el-aside {
@@ -51,9 +76,7 @@ export default {
   }
 
   .el-main {
-    padding: 0;
     height: 100%;
-    border: 1px solid #000;
     overflow: hidden;
   }
 }
