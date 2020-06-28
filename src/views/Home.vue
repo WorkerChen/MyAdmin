@@ -26,7 +26,6 @@
 
       <!-- 内容栏 -->
       <el-main>
-        <div class="load" v-if="!view_show" v-loading="!view_show"></div>
         <transition name="view">
           <router-view v-show="view_show" />
         </transition>
@@ -58,19 +57,9 @@ export default {
       }
     });
   },
-  updated() {
-    /*内容加载过度*/
-    let time = setTimeout(() => {
-      this.view_show = true;
-    }, 2000);
-    if (this.view_show) {
-      clearTimeout(time);
-    }
-  },
   mounted() {
     /*获取用户窗口宽度*/
     this.view_show = true;
-
     window.onresize = () => {
       return (() => {
         this.sceenWidth = window.innerWidth;
@@ -79,6 +68,7 @@ export default {
   },
   components: { navigation },
   watch: {
+    // 监听窗口宽度变化
     sceenWidth: function(newVal) {
       if (newVal < 1048) {
         this.menu = true;
@@ -86,11 +76,10 @@ export default {
         this.menu = false;
       }
     },
+    // 监听路由变化
     $route(to) {
       this.breadName = [];
       let pathList = to.matched;
-      console.log(this.view_show);
-      this.view_show = false;
       pathList.forEach(item => {
         if (item.name) {
           this.breadName.push(item.name);
@@ -142,10 +131,6 @@ export default {
   .el-main {
     height: 100%;
     overflow: hidden;
-    .load {
-      width: 100%;
-      height: 100%;
-    }
   }
 }
 </style>
