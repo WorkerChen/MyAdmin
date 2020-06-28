@@ -5,6 +5,7 @@ import store from "./store";
 import Element from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 import "@/assets/css/main.scss";
+import "@/assets/css/Animation.css";
 import "@/assets/font/font.css";
 
 Vue.use(Element);

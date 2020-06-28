@@ -1,29 +1,32 @@
 <template>
   <el-container class="home">
     <!-- 侧边导航栏 -->
-    <transition>
-      <el-aside width="">
-        <navigation :collapse="menu"></navigation>
-      </el-aside>
-    </transition>
+    <el-aside width="">
+      <navigation :collapse="menu"></navigation>
+    </el-aside>
     <el-container>
       <!-- 顶部 -->
       <el-header>
-        <i
-          :class="menu ? ' iconfont iconcaidan1' : 'iconfont iconcaidan'"
-          @click="checkMenu()"
-        ></i>
+        <el-col :span="1.5">
+          <i
+            :class="menu ? ' iconfont iconcaidan1' : 'iconfont iconcaidan'"
+            @click="checkMenu()"
+          ></i
+        ></el-col>
         <!-- 面包屑 -->
-        <el-breadcrumb separator="/">
-          <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-          <!-- <el-breadcrumb-item v-for="(item, index) in breadName" :key="index">{{
-            item
-          }}</el-breadcrumb-item> -->
-        </el-breadcrumb>
+        <el-col :span="10">
+          <el-breadcrumb separator="/">
+            <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+            <el-breadcrumb-item v-for="(item, key) in breadName" :key="key">{{
+              item
+            }}</el-breadcrumb-item>
+          </el-breadcrumb>
+        </el-col>
       </el-header>
 
       <!-- 内容栏 -->
       <el-main>
+        <div class="load" v-if="!view_show" v-loading="!view_show"></div>
         <transition name="view">
           <router-view v-show="view_show" />
         </transition>
@@ -45,10 +48,29 @@ export default {
       breadName: []
     };
   },
+  created() {
+    // 获取页面的加载地址和名字
+    this.breadName = [];
+    let pathList = this.$route.matched;
+    pathList.forEach(item => {
+      if (item.name) {
+        this.breadName.push(item.name);
+      }
+    });
+  },
+  updated() {
+    /*内容加载过度*/
+    let time = setTimeout(() => {
+      this.view_show = true;
+    }, 2000);
+    if (this.view_show) {
+      clearTimeout(time);
+    }
+  },
   mounted() {
-    /*内容加载*/
-    this.view_show = true;
     /*获取用户窗口宽度*/
+    this.view_show = true;
+
     window.onresize = () => {
       return (() => {
         this.sceenWidth = window.innerWidth;
@@ -63,6 +85,17 @@ export default {
       } else {
         this.menu = false;
       }
+    },
+    $route(to) {
+      this.breadName = [];
+      let pathList = to.matched;
+      console.log(this.view_show);
+      this.view_show = false;
+      pathList.forEach(item => {
+        if (item.name) {
+          this.breadName.push(item.name);
+        }
+      });
     }
   },
   methods: {
@@ -77,27 +110,28 @@ export default {
 .home {
   height: 100vh;
   .el-header {
-    display: flex;
     width: 100%;
     height: 50px !important;
     line-height: 50px;
     padding: 0;
     border-bottom: 1px solid #000;
+    position: relative;
     i {
+      position: relative;
       height: 100%;
       width: 50px;
       text-align: center;
       display: block;
       font-size: 24px;
-      transition: background-color 1s;
       &:hover {
         background-color: #cccccc;
         color: #fff;
       }
     }
     .el-breadcrumb {
-      line-height: 50px;
-      margin-left: 10px;
+      position: absolute;
+      bottom: 10px;
+      margin-left: 8px;
     }
   }
 
@@ -108,19 +142,10 @@ export default {
   .el-main {
     height: 100%;
     overflow: hidden;
-  }
-}
-</style>
-<style>
-.view-enter-active {
-  animation: fade 1.25s;
-}
-@keyframes fade {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
+    .load {
+      width: 100%;
+      height: 100%;
+    }
   }
 }
 </style>

@@ -54,9 +54,6 @@ export default {
   },
   props: {
     collapse: Boolean
-  },
-  mounted() {
-    console.log(this.myRoutes);
   }
 };
 </script>
