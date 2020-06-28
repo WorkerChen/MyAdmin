@@ -10,11 +10,18 @@
       <!-- 顶部 -->
       <el-header>
         <i
-          :class="menu ? 'iconcaidan1' : 'iconcaidan'"
-          class="iconfont"
+          :class="menu ? ' iconfont iconcaidan1' : 'iconfont iconcaidan'"
           @click="checkMenu()"
         ></i>
+        <!-- 面包屑 -->
+        <el-breadcrumb separator="/">
+          <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+          <!-- <el-breadcrumb-item v-for="(item, index) in breadName" :key="index">{{
+            item
+          }}</el-breadcrumb-item> -->
+        </el-breadcrumb>
       </el-header>
+
       <!-- 内容栏 -->
       <el-main>
         <transition name="view">
@@ -34,11 +41,14 @@ export default {
     return {
       view_show: false,
       menu: false,
-      sceenWidth: window.innerWidth
+      sceenWidth: window.innerWidth,
+      breadName: []
     };
   },
   mounted() {
+    /*内容加载*/
     this.view_show = true;
+    /*获取用户窗口宽度*/
     window.onresize = () => {
       return (() => {
         this.sceenWidth = window.innerWidth;
@@ -56,12 +66,9 @@ export default {
     }
   },
   methods: {
+    /*导航开关按钮*/
     checkMenu() {
       this.menu = !this.menu;
-      console.log(this.menu);
-    },
-    Menu() {
-      this.menu = true;
     }
   }
 };
@@ -70,6 +77,7 @@ export default {
 .home {
   height: 100vh;
   .el-header {
+    display: flex;
     width: 100%;
     height: 50px !important;
     line-height: 50px;
@@ -86,6 +94,10 @@ export default {
         background-color: #cccccc;
         color: #fff;
       }
+    }
+    .el-breadcrumb {
+      line-height: 50px;
+      margin-left: 10px;
     }
   }
 
